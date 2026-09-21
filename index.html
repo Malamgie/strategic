@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCEC | Strategic Construction Engineering and Consultancy</title>
+    <meta name="description" content="We deliver innovative engineering, reliable construction and expert consultancy services for a stronger, smarter and more sustainable future.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Phosphor Icons for a clean, architectural look) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#030b17', // Very deep navy from reference
+                            darker: '#020811',
+                            gold: '#e29a23', // Muted rich gold/amber
+                            light: '#f8fafc',
+                            gray: '#8a99af',
+                            border: '#1e293b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "linear-gradient(to right bottom, rgba(3, 11, 23, 0.9), rgba(3, 11, 23, 0.7)), url('https://images.unsplash.com/photo-1541888082405-eb7414343e9e?q=80&w=2070&auto=format&fit=crop')",
+                        'cta-pattern': "linear-gradient(to right, rgba(3, 11, 23, 0.95), rgba(3, 11, 23, 0.8)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')",
+                        'blueprint': "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e293b' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")",
+                    },
+                    boxShadow: {
+                        'card': '0 10px 30px -10px rgba(0, 0, 0, 0.05)',
+                        'gold': '0 4px 14px 0 rgba(226, 154, 35, 0.39)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles & Utilities */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(90deg, #e29a23, #f5b945);
+        }
+
+        /* Image hover zooms */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom-container img {
+            transition: transform 0.5s ease;
+        }
+        .group:hover .img-zoom-container img {
+            transform: scale(1.05);
+        }
+
+        /* Modal Dialog Base Styles */
+        dialog {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.3s ease-out;
+            max-width: 90vw;
+            width: 100%;
+        }
+        dialog[open] {
+            opacity: 1;
+            transform: scale(1);
+        }
+        dialog::backdrop {
+            background: rgba(3, 11, 23, 0.8);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        dialog[open]::backdrop {
+            opacity: 1;
+        }
+
+        /* Loader animation */
+        .loader {
+            border: 2px solid rgba(255,255,255,0.2);
+            border-left-color: #ffffff;
+            border-radius: 50%;
+            width: 1rem;
+            height: 1rem;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #030b17; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #e29a23; }
+
+        /* Process connecting line (Desktop) */
+        @media (min-width: 1024px) {
+            .process-connector::after {
+                content: '';
+                position: absolute;
+                top: 2rem; /* Align with icon center */
+                right: -50%;
+                width: 100%;
+                height: 1px;
+                background-color: #e5e7eb; /* Tailwind gray-200 */
+                z-index: -1;
+            }
+            .process-item:last-child .process-connector::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800 font-sans antialiased overflow-x-hidden">
+
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 px-6 lg:px-12 bg-brand-dark/90 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3">
+                <img src="logo.webp" alt="SCEC Logo" class="h-10 w-auto object-contain" onerror="this.src='https://placehold.co/120x40/030b17/ffffff?text=SCEC+LOGO'">
+                <div class="hidden sm:block">
+                    <h1 class="text-white font-bold text-sm leading-tight tracking-wide">STRATEGIC</h1>
+                    <p class="text-brand-gray text-[0.6rem] leading-tight uppercase">Construction Engineering<br>And Consultancy Company Ltd</p>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center gap-8">
+                <ul class="flex gap-8 text-sm font-medium text-white/80">
+                    <li><a href="#about" class="hover:text-brand-gold transition-colors">About</a></li>
+                    <li><a href="#services" class="hover:text-brand-gold transition-colors">Services</a></li>
+                    <li><a href="#projects" class="hover:text-brand-gold transition-colors">Projects</a></li>
+                    <li><a href="#capabilities" class="hover:text-brand-gold transition-colors">Capabilities</a></li>
+                    <li><a href="#insights" class="hover:text-brand-gold transition-colors">Insights</a></li>
+                    <li><a href="#contact" class="hover:text-brand-gold transition-colors">Contact</a></li>
+                </ul>
+                <button onclick="openModal('consultationModal')" class="bg-brand-gold text-brand-darker px-6 py-2.5 rounded-sm font-semibold text-sm hover:bg-yellow-500 transition-colors shadow-gold flex items-center gap-2">
+                    Start a Project <i class="ph ph-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobileMenuBtn" class="lg:hidden text-white text-2xl">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Overlay -->
+        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full bg-brand-darker border-t border-brand-border p-6 flex-col gap-6 shadow-2xl">
+             <ul class="flex flex-col gap-4 text-white text-lg">
+                <li><a href="#about" class="block mobile-link">About</a></li>
+                <li><a href="#services" class="block mobile-link">Services</a></li>
+                <li><a href="#projects" class="block mobile-link">Projects</a></li>
+                <li><a href="#capabilities" class="block mobile-link">Capabilities</a></li>
+                <li><a href="#contact" class="block mobile-link">Contact</a></li>
+            </ul>
+            <button onclick="openModal('consultationModal'); document.getElementById('mobileMenu').classList.add('hidden');" class="bg-brand-gold text-brand-darker px-6 py-3 rounded-sm font-bold text-center w-full">
+                Start a Project
+            </button>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center bg-hero-pattern bg-cover bg-center pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full z-10 relative">
+            <div class="max-w-3xl">
+                <p class="text-brand-gold font-medium tracking-[0.2em] text-xs uppercase mb-4 flex items-center gap-2">
+                    Engineering <span class="w-1 h-1 rounded-full bg-brand-gold opacity-50"></span> 
+                    Construction <span class="w-1 h-1 rounded-full bg-brand-gold opacity-50"></span> 
+                    Consultancy
+                </p>
+                <h2 class="text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-6">
+                    Strategy Built<br>Into <span class="text-brand-gold">Structure.</span>
+                </h2>
+                <p class="text-lg lg:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed font-light">
+                    We deliver innovative engineering, reliable construction and expert consultancy services for a stronger, smarter and more sustainable future.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="openModal('consultationModal')" class="bg-brand-gold text-brand-darker px-8 py-3.5 rounded-sm font-semibold hover:bg-yellow-500 transition-colors flex items-center gap-2 shadow-gold">
+                        Start a Project <i class="ph ph-arrow-right"></i>
+                    </button>
+                    <a href="#projects" class="border border-white/30 text-white hover:bg-white/10 px-8 py-3.5 rounded-sm font-medium transition-colors flex items-center gap-2">
+                        Explore Our Work
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 right-6 lg:right-12 flex items-center gap-3 text-white/50 text-sm">
+            <i class="ph ph-mouse text-xl animate-bounce"></i>
+            <span class="hidden sm:inline">Scroll to explore</span>
+        </div>
+    </header>
+
+    <section id="about" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Text Content -->
+                <div>
+                    <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">About SCEC</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-brand-darker mb-6 leading-tight">
+                        Building a Stronger<br>Tomorrow
+                    </h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Strategic Construction Engineering and Consultancy Company Ltd. is a forward-thinking engineering and construction firm committed to delivering exceptional projects through strategic planning, technical expertise and a deep understanding of our client's needs.
+                    </p>
+                    <p class="text-gray-600 mb-8 leading-relaxed">
+                        We combine engineering excellence with practical experience to deliver solutions that stand the test of time — from concept to completion.
+                    </p>
+                    <a href="#capabilities" class="inline-flex items-center gap-2 text-brand-darker font-bold hover:text-brand-gold transition-colors pb-1 border-b-2 border-brand-darker hover:border-brand-gold">
+                        Learn More <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Image Composition -->
+                <div class="relative">
+                    <div class="img-zoom-container rounded-sm overflow-hidden aspect-[4/3] shadow-2xl relative z-10">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop" alt="Modern Building Infrastructure" class="w-full h-full object-cover">
+                    </div>
+                    <!-- Decorative Overlay Box -->
+                    <div class="absolute -bottom-8 -right-8 bg-brand-dark text-white p-8 lg:p-10 z-20 max-w-[280px] shadow-xl border-l-4 border-brand-gold hidden md:block">
+                        <h3 class="text-xl font-bold mb-2">Engineering Today for a Better Tomorrow.</h3>
+                        <div class="w-8 h-8 bg-brand-gold mt-6 flex justify-end items-end p-1">
+                            <div class="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-24 bg-brand-dark text-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <!-- Header -->
+            <div class="grid lg:grid-cols-2 gap-8 mb-16 items-end">
+                <div>
+                    <p class="text-brand-gold text-sm font-bold uppercase tracking-widest mb-3">Our Services</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold leading-tight">
+                        Comprehensive Solutions<br>for Every Project
+                    </h2>
+                </div>
+                <div class="lg:text-right">
+                    <p class="text-brand-gray max-w-md ml-auto text-lg leading-relaxed">
+                        From complex infrastructure to modern developments, we provide end-to-end services that turn vision into lasting value.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dynamic Services Grid container -->
+            <div id="services-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 bg-brand-light">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
+                <div>
+                    <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Featured Projects</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold text-brand-darker leading-tight">
+                        Our Work Speaks<br>for Itself
+                    </h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-gray-600 max-w-md mb-4 hidden md:block">
+                        Explore a selection of our completed and ongoing projects across Nigeria and beyond.
+                    </p>
+                    <a href="#" class="inline-flex items-center gap-2 text-brand-darker font-bold hover:text-brand-gold transition-colors pb-1 border-b border-brand-darker">
+                        View All Projects <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Dynamic Projects Grid container -->
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="capabilities" class="py-24 bg-brand-darker text-white relative overflow-hidden bg-blueprint bg-repeat border-y border-brand-border">
+        <div class="absolute inset-0 bg-brand-darker/90"></div> <!-- Overlay for blueprint -->
+        
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Text -->
+                <div>
+                    <p class="text-brand-gold text-sm font-bold uppercase tracking-widest mb-3">Our Capabilities</p>
+                    <h2 class="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                        Technical Expertise.<br>Proven Process.
+                    </h2>
+                    <p class="text-brand-gray mb-10 max-w-lg leading-relaxed text-lg">
+                        We combine advanced engineering, modern construction methods and strategic consultancy to deliver projects that are safe, efficient and built for the future.
+                    </p>
+                    <a href="#" class="border border-white/30 text-white hover:bg-white/10 px-8 py-3.5 rounded-sm font-medium transition-colors inline-flex items-center gap-2">
+                        Explore Our Capabilities <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- List -->
+                <div class="grid sm:grid-cols-2 gap-y-8 gap-x-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center text-brand-gold flex-shrink-0 bg-brand-gold/5">
+                            <i class="ph ph-compass-tool text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">Structural Engineering & Design</h4>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center text-brand-gold flex-shrink-0 bg-brand-gold/5">
+                            <i class="ph ph-mountains text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">Geotechnical Analysis</h4>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center text-brand-gold flex-shrink-0 bg-brand-gold/5">
+                            <i class="ph ph-chart-line-up text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">Project Feasibility Studies</h4>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center text-brand-gold flex-shrink-0 bg-brand-gold/5">
+                            <i class="ph ph-leaf text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">Sustainable Solutions</h4>
+                        </div>
+                    </div>
+                     <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-full border border-brand-gold/30 flex items-center justify-center text-brand-gold flex-shrink-0 bg-brand-gold/5">
+                            <i class="ph ph-check-circle text-2xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">Quality Assurance & Control</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Stats Area -->
+                <div class="lg:col-span-7">
+                    <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Our Strength</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-brand-darker mb-4">
+                        Trusted by Clients.<br>Built on Excellence.
+                    </h2>
+                    <p class="text-gray-600 mb-12 max-w-lg">
+                        Our commitment to quality, safety and professionalism is reflected in our people, processes and performance.
+                    </p>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div class="border-t border-gray-200 pt-4 relative group cursor-pointer">
+                            <h3 class="text-4xl font-bold text-brand-darker mb-2 group-hover:text-brand-gold transition-colors">[XX+]</h3>
+                            <p class="text-sm text-gray-500 font-medium">Projects Completed</p>
+                            <i class="ph ph-arrow-up-right absolute top-4 right-0 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4 relative group cursor-pointer">
+                            <h3 class="text-4xl font-bold text-brand-darker mb-2 group-hover:text-brand-gold transition-colors">[XX+]</h3>
+                            <p class="text-sm text-gray-500 font-medium">Skilled Professionals</p>
+                            <i class="ph ph-arrow-up-right absolute top-4 right-0 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4 relative group cursor-pointer">
+                            <h3 class="text-4xl font-bold text-brand-darker mb-2 group-hover:text-brand-gold transition-colors">[XXXX]</h3>
+                            <p class="text-sm text-gray-500 font-medium">Years of Combined Experience</p>
+                            <i class="ph ph-arrow-up-right absolute top-4 right-0 text-gray-300 group-hover:text-brand-gold transition-colors"></i>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4 relative group cursor-pointer">
+                            <h3 class="text-4xl font-bold text-brand-darker mb-2 group-hover:text-brand-gold transition-colors">[XX+]</h3>
+                            <p class="text-sm text-gray-500 font-medium">Certifications & Compliance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CAC Certificate Area -->
+                <div class="lg:col-span-5 flex justify-center lg:justify-end">
+                    <div class="relative w-full max-w-sm cursor-pointer group" onclick="openModal('cacModal')">
+                        <!-- Background decorative docs -->
+                        <div class="absolute top-4 left-4 w-full h-full bg-white border border-gray-200 shadow-sm rotate-2 origin-bottom-right transition-transform group-hover:rotate-6"></div>
+                        <div class="absolute top-2 left-2 w-full h-full bg-white border border-gray-200 shadow-sm rotate-1 origin-bottom-right transition-transform group-hover:rotate-3"></div>
+                        
+                        <!-- Main Certificate -->
+                        <div class="relative bg-white border border-gray-200 p-6 shadow-md transition-transform group-hover:-translate-y-2 z-10 flex flex-col items-center">
+                            <img src="cac.webp" alt="Corporate Registration Certificate" class="w-full h-auto object-cover opacity-90 mix-blend-multiply" onerror="this.src='https://placehold.co/400x560/f8fafc/a1a1aa?text=CAC+Certificate+Document'">
+                            
+                            <div class="mt-6 w-full pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Verified</p>
+                                    <p class="font-bold text-brand-darker text-sm">Our Certifications</p>
+                                </div>
+                                <div class="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand-darker group-hover:bg-brand-gold group-hover:text-white transition-colors">
+                                    <i class="ph ph-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
+                <div>
+                    <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Our Process</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-brand-darker">
+                        From Vision to Reality
+                    </h2>
+                </div>
+                <div class="text-right">
+                    <p class="text-gray-600 max-w-sm">
+                        We follow a structured and transparent process to ensure every project is delivered with excellence.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 relative">
+                <!-- Line is handled via CSS pseudo elements on process-connector class -->
+                
+                <div class="process-item relative">
+                    <div class="process-connector relative mb-6">
+                        <div class="w-12 h-12 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-lg shadow-md z-10 relative">01</div>
+                    </div>
+                    <h4 class="font-bold text-brand-darker text-lg mb-2">Consultation</h4>
+                    <p class="text-sm text-gray-500">Understanding your needs and goals.</p>
+                </div>
+
+                <div class="process-item relative">
+                    <div class="process-connector relative mb-6">
+                        <div class="w-12 h-12 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-lg shadow-md z-10 relative">02</div>
+                    </div>
+                    <h4 class="font-bold text-brand-darker text-lg mb-2">Planning & Design</h4>
+                    <p class="text-sm text-gray-500">Turning ideas into practical plans.</p>
+                </div>
+
+                <div class="process-item relative">
+                    <div class="process-connector relative mb-6">
+                        <div class="w-12 h-12 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-lg shadow-md z-10 relative">03</div>
+                    </div>
+                    <h4 class="font-bold text-brand-darker text-lg mb-2">Engineering</h4>
+                    <p class="text-sm text-gray-500">Technical detailing and analysis.</p>
+                </div>
+
+                <div class="process-item relative">
+                    <div class="process-connector relative mb-6">
+                        <div class="w-12 h-12 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-lg shadow-md z-10 relative">04</div>
+                    </div>
+                    <h4 class="font-bold text-brand-darker text-lg mb-2">Construction</h4>
+                    <p class="text-sm text-gray-500">Quality execution and supervision.</p>
+                </div>
+
+                <div class="process-item relative">
+                    <div class="process-connector relative mb-6">
+                        <div class="w-12 h-12 rounded-full bg-brand-dark text-white flex items-center justify-center font-bold text-lg shadow-md z-10 relative">05</div>
+                    </div>
+                    <h4 class="font-bold text-brand-darker text-lg mb-2">Handover</h4>
+                    <p class="text-sm text-gray-500">On-time delivery and support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 relative bg-brand-dark bg-cover bg-center" style="background-image: linear-gradient(rgba(3, 11, 23, 0.85), rgba(3, 11, 23, 0.95)), url('https://images.unsplash.com/photo-1506526117281-99c5139a66ce?q=80&w=2070&auto=format&fit=crop');">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16">
+                <div>
+                    <p class="text-brand-gold text-sm font-bold uppercase tracking-widest mb-3">Our Impact</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white">
+                        Projects That Create<br>Lasting Value
+                    </h2>
+                </div>
+                <div class="md:text-right">
+                    <p class="text-gray-400 max-w-sm">
+                        We build infrastructure, develop communities and contribute to a stronger, more sustainable future.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/10">
+                <div class="pl-4 first:pl-0">
+                    <h3 class="text-4xl md:text-5xl font-bold text-white mb-2">[XX+]</h3>
+                    <p class="text-sm text-brand-gray">Projects Completed</p>
+                </div>
+                 <div class="pl-4 md:pl-8">
+                    <h3 class="text-4xl md:text-5xl font-bold text-white mb-2">[XX+]</h3>
+                    <p class="text-sm text-brand-gray">Communities Impacted</p>
+                </div>
+                 <div class="pl-4 md:pl-8">
+                    <h3 class="text-4xl md:text-5xl font-bold text-white mb-2">[XX+]</h3>
+                    <p class="text-sm text-brand-gray">Partners & Stakeholders</p>
+                </div>
+                 <div class="pl-4 md:pl-8">
+                    <h3 class="text-4xl md:text-5xl font-bold text-white mb-2">[XXXX]</h3>
+                    <p class="text-sm text-brand-gray">Total Value Delivered</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <p class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-3">Clients & Partners</p>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-brand-darker">
+                        Trusted by Visionaries
+                    </h2>
+                </div>
+                <div class="hidden md:flex gap-2">
+                    <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-brand-gold hover:text-brand-gold transition-colors">
+                        <i class="ph ph-arrow-left"></i>
+                    </button>
+                    <button class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-500 hover:border-brand-gold hover:text-brand-gold transition-colors">
+                        <i class="ph ph-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Testimonial Cards -->
+            <div class="grid md:grid-cols-3 gap-6 mb-16">
+                <!-- Placeholder 1 -->
+                <div class="p-8 border border-gray-100 rounded-sm shadow-sm bg-gray-50/50 hover:shadow-md transition-shadow">
+                    <i class="ph-fill ph-quotes text-4xl text-brand-gold/30 mb-6"></i>
+                    <p class="text-gray-700 mb-8 font-medium leading-relaxed">
+                        "SCEC demonstrated exceptional professionalism, technical expertise and commitment to quality throughout our project."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
+                            <i class="ph ph-user text-xl"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-brand-darker text-sm">[Client Name]</h5>
+                            <p class="text-xs text-gray-500">[Company / Organization]</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Placeholder 2 -->
+                <div class="p-8 border border-gray-100 rounded-sm shadow-sm bg-gray-50/50 hover:shadow-md transition-shadow">
+                    <i class="ph-fill ph-quotes text-4xl text-brand-gold/30 mb-6"></i>
+                    <p class="text-gray-700 mb-8 font-medium leading-relaxed">
+                        "Their attention to detail and ability to deliver under tight timelines was impressive. A reliable partner in every sense."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
+                            <i class="ph ph-user text-xl"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-brand-darker text-sm">[Client Name]</h5>
+                            <p class="text-xs text-gray-500">[Company / Organization]</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Placeholder 3 -->
+                <div class="p-8 border border-gray-100 rounded-sm shadow-sm bg-gray-50/50 hover:shadow-md transition-shadow">
+                    <i class="ph-fill ph-quotes text-4xl text-brand-gold/30 mb-6"></i>
+                    <p class="text-gray-700 mb-8 font-medium leading-relaxed">
+                        "A highly competent team with a clear understanding of our needs. The results exceeded our expectations."
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
+                            <i class="ph ph-user text-xl"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-brand-darker text-sm">[Client Name]</h5>
+                            <p class="text-xs text-gray-500">[Company / Organization]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Logos Row -->
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-8 items-center opacity-50 grayscale hover:grayscale-0 transition-all duration-500 border-t border-gray-100 pt-10">
+                <div class="flex items-center justify-center gap-2 font-bold text-gray-400 text-sm"><i class="ph ph-buildings text-2xl"></i> Client Logo</div>
+                <div class="flex items-center justify-center gap-2 font-bold text-gray-400 text-sm"><i class="ph ph-city text-2xl"></i> Client Logo</div>
+                <div class="flex items-center justify-center gap-2 font-bold text-gray-400 text-sm"><i class="ph ph-bridge text-2xl"></i> Client Logo</div>
+                <div class="flex items-center justify-center gap-2 font-bold text-gray-400 text-sm"><i class="ph ph-factory text-2xl"></i> Client Logo</div>
+                <div class="flex items-center justify-center gap-2 font-bold text-gray-400 text-sm"><i class="ph ph-road-horizon text-2xl"></i> Client Logo</div>
+                <div class="flex items-center justify-center gap-2 font-bold text-gray-400 text-sm"><i class="ph ph-bank text-2xl"></i> Client Logo</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-0">
+        <div class="bg-cta-pattern bg-cover bg-center">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 py-24">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <p class="text-brand-gold text-sm font-bold uppercase tracking-widest mb-3">Let's Work Together</p>
+                        <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6">
+                            Let's Build What Matters.
+                        </h2>
+                        <p class="text-gray-300 mb-10 max-w-md text-lg">
+                            Have a project in mind? We're ready to help you turn your vision into a solid plan and lasting structure.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="openModal('consultationModal')" class="bg-brand-gold text-brand-darker px-8 py-3.5 rounded-sm font-bold hover:bg-yellow-500 transition-colors flex items-center gap-2 shadow-gold">
+                                Start a Project <i class="ph ph-arrow-right"></i>
+                            </button>
+                            <a href="#contact" class="border border-white/30 text-white hover:bg-white/10 px-8 py-3.5 rounded-sm font-medium transition-colors inline-block">
+                                Contact Us
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative Element right side -->
+                    <div class="hidden lg:flex justify-end opacity-80">
+                        <div class="border-l border-brand-gold/50 pl-8 py-4 text-white">
+                            <div class="w-12 h-12 rounded-full border border-brand-gold flex items-center justify-center text-brand-gold mb-6">
+                                <i class="ph ph-compass-tool text-xl"></i>
+                            </div>
+                            <ul class="space-y-2 text-sm text-gray-300 font-medium tracking-wide">
+                                <li>Construction</li>
+                                <li>Engineering</li>
+                                <li>Consultancy</li>
+                            </ul>
+                            <p class="mt-6 text-brand-gold font-bold text-sm tracking-widest uppercase">A Stronger Tomorrow</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-brand-darker pt-20 pb-10 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+                
+                <!-- Brand Col -->
+                <div class="lg:col-span-2">
+                    <a href="#" class="flex items-center gap-3 mb-6">
+                        <img src="logo.webp" alt="SCEC Logo" class="h-12 w-auto object-contain brightness-0 invert" onerror="this.src='https://placehold.co/120x40/030b17/ffffff?text=SCEC+LOGO'">
+                        <div>
+                            <h2 class="text-white font-bold text-sm leading-tight tracking-wide">STRATEGIC</h2>
+                            <p class="text-brand-gray text-[0.6rem] leading-tight uppercase">Construction Engineering<br>And Consultancy Company Ltd</p>
+                        </div>
+                    </a>
+                    <p class="text-gray-400 text-sm max-w-sm mb-6">
+                        Strategy Built Into Structure.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-gold hover:text-white transition-colors"><i class="ph-fill ph-linkedin-logo"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-gold hover:text-white transition-colors"><i class="ph-fill ph-twitter-logo"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-gold hover:text-white transition-colors"><i class="ph-fill ph-facebook-logo"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links Col 1 -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#about" class="hover:text-brand-gold transition-colors">About Us</a></li>
+                        <li><a href="#services" class="hover:text-brand-gold transition-colors">Services</a></li>
+                        <li><a href="#projects" class="hover:text-brand-gold transition-colors">Projects</a></li>
+                        <li><a href="#capabilities" class="hover:text-brand-gold transition-colors">Capabilities</a></li>
+                        <li><a href="#contact" class="hover:text-brand-gold transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links Col 2 -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-wider">Our Services</h4>
+                    <ul class="space-y-3 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-brand-gold transition-colors">Engineering</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition-colors">Construction</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition-colors">Consultancy</a></li>
+                        <li><a href="#" class="hover:text-brand-gold transition-colors">Project Management</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Col -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 text-sm uppercase tracking-wider">Get in Touch</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-envelope-simple text-brand-gold mt-1 text-lg"></i>
+                            <a href="mailto:[PASTE_EMAIL_HERE]" class="hover:text-white transition-colors">[PASTE_EMAIL_HERE]</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-phone text-brand-gold mt-1 text-lg"></i>
+                            <a href="tel:[PHONE_NUMBER]" class="hover:text-white transition-colors">[PHONE_NUMBER]</a>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-map-pin text-brand-gold mt-1 text-lg"></i>
+                            <span>[Corporate Address Placeholder]<br>Nigeria</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs text-gray-500">
+                    &copy; <span id="year"></span> Strategic Construction Engineering and Consultancy Company Ltd. All rights reserved.
+                </p>
+                <div class="flex gap-6 text-xs text-gray-500">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+    <!-- CAC Certificate Modal -->
+    <dialog id="cacModal" class="bg-transparent p-0 m-auto backdrop:bg-black/80">
+        <div class="relative bg-white rounded-sm w-full max-w-3xl mx-auto shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center p-4 border-b border-gray-100">
+                <h3 class="font-bold text-brand-darker">Corporate Registration Certificate</h3>
+                <button onclick="closeModal('cacModal')" class="text-gray-400 hover:text-brand-darker transition-colors p-2">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto bg-gray-50 flex justify-center">
+                <img src="cac.webp" alt="CAC Certificate Full View" class="max-w-full h-auto shadow-sm border border-gray-200" onerror="this.src='https://placehold.co/800x1130/ffffff/a1a1aa?text=CAC+Certificate+Full+View'">
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Consultation Form Modal -->
+    <dialog id="consultationModal" class="bg-transparent p-0 m-auto backdrop:bg-brand-darker/90 overflow-hidden">
+        <div class="relative bg-white w-full max-w-2xl mx-auto shadow-2xl flex flex-col max-h-[90vh] sm:rounded-sm">
+            <!-- Header -->
+            <div class="flex justify-between items-center p-6 border-b border-gray-100 bg-gray-50">
+                <div>
+                    <h3 class="text-2xl font-bold text-brand-darker">Start Your Project</h3>
+                    <p class="text-sm text-gray-500 mt-1">Request a consultation with our engineering team.</p>
+                </div>
+                <button onclick="closeModal('consultationModal')" class="text-gray-400 hover:text-brand-darker transition-colors p-2 rounded-full hover:bg-gray-200">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Form Body -->
+            <div class="p-6 overflow-y-auto custom-scrollbar">
+                <form id="projectForm" class="space-y-6">
+                    <!-- FormSubmit Configuration -->
+                    <!-- Email placeholder replacing YOUR_EMAIL_HERE -->
+                    <input type="hidden" name="_to" value="https://formsubmit.co/malamgiemou00@gmail.com">
+                    <input type="hidden" name="_subject" value="New SCEC Project Consultation Request">
+                    <input type="hidden" name="_template" value="table">
+                    <!-- Removing captcha for AJAX submission smoothness, assuming backend handles spam if needed, or FormSubmit standard behavior -->
+                    <input type="hidden" name="_captcha" value="false"> 
+
+                    <!-- Personal Info -->
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Contact Information</h4>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                <input type="text" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Company / Org</label>
+                                <input type="text" name="company" class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                <input type="tel" name="phone" required class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Info -->
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Project Details</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Service Required *</label>
+                                <select name="service_required" required class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors bg-white">
+                                    <option value="" disabled selected>Select primary service...</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Construction">Construction</option>
+                                    <option value="Consultancy">Consultancy</option>
+                                    <option value="Project Management">Project Management</option>
+                                    <option value="Multiple/Other">Multiple / Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Project Location *</label>
+                                <input type="text" name="location" required class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors" placeholder="City, State, Country">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Project Description *</label>
+                                <textarea name="description" required rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-sm focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition-colors resize-none" placeholder="Briefly describe your project scope and goals..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer / Submit -->
+                    <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
+                        <button type="button" onclick="closeModal('consultationModal')" class="px-6 py-2 border border-gray-300 text-gray-700 rounded-sm hover:bg-gray-50 transition-colors font-medium">Cancel</button>
+                        <button type="submit" id="submitBtn" class="bg-brand-darker text-white px-8 py-2 rounded-sm font-bold hover:bg-brand-gold transition-colors flex items-center justify-center min-w-[160px]">
+                            <span id="btnText">Submit Request</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Success Modal -->
+    <dialog id="successModal" class="bg-transparent p-0 m-auto backdrop:bg-brand-darker/95">
+        <div class="bg-white w-full max-w-md mx-auto p-8 rounded-sm shadow-2xl text-center">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph ph-check text-3xl font-bold"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-brand-darker mb-3">Consultation Request Received</h3>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                Thank you for contacting Strategic Construction Engineering and Consultancy Company Ltd. Our team has received your request and will review the information provided.
+            </p>
+            <button onclick="closeModal('successModal')" class="w-full bg-brand-darker text-white py-3 rounded-sm font-bold hover:bg-brand-gold transition-colors">
+                Done
+            </button>
+        </div>
+    </dialog>
+
+    <!-- Error Modal -->
+    <dialog id="errorModal" class="bg-transparent p-0 m-auto backdrop:bg-brand-darker/95">
+        <div class="bg-white w-full max-w-md mx-auto p-8 rounded-sm shadow-2xl text-center">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph ph-x text-3xl font-bold"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-brand-darker mb-3">Submission Failed</h3>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                We couldn't submit your request right now. Please check your connection and try again, or contact us directly via email.
+            </p>
+            <div class="flex gap-3">
+                <button onclick="closeModal('errorModal')" class="flex-1 border border-gray-300 text-gray-700 py-3 rounded-sm font-bold hover:bg-gray-50 transition-colors">
+                    Close
+                </button>
+                <button onclick="closeModal('errorModal'); openModal('consultationModal');" class="flex-1 bg-brand-darker text-white py-3 rounded-sm font-bold hover:bg-brand-gold transition-colors">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        // Set Current Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 1. Data Structures (CMS Ready)
+        const servicesData = [
+            {
+                title: "Engineering",
+                description: "Technical expertise and innovative solutions for complex challenges.",
+                icon: "ph-compass-tool",
+                image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                title: "Construction",
+                description: "Quality execution, on time, for lasting results.",
+                icon: "ph-crane",
+                image: "https://images.unsplash.com/photo-1541888082405-eb7414343e9e?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                title: "Consultancy",
+                description: "Strategic advice for informed decisions and sustainable growth.",
+                icon: "ph-users-three",
+                image: "https://images.unsplash.com/photo-1504307651254-35680f356f27?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                title: "Project Management",
+                description: "Efficient planning, coordination and delivery.",
+                icon: "ph-kanban",
+                image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=600&auto=format&fit=crop"
+            }
+        ];
+
+        const projectsData = [
+            {
+                title: "Commercial Building",
+                category: "Construction",
+                location: "Lagos, Nigeria",
+                status: "Completed",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                title: "Road Infrastructure",
+                category: "Civil Engineering",
+                location: "Abuja, Nigeria",
+                status: "Ongoing",
+                image: "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                title: "Bridge Construction",
+                category: "Infrastructure",
+                location: "Rivers, Nigeria",
+                status: "Completed",
+                image: "https://images.unsplash.com/photo-1513828742140-ccaa15f17171?q=80&w=800&auto=format&fit=crop"
+            },
+            {
+                title: "Institutional Building",
+                category: "Construction",
+                location: "Kano, Nigeria",
+                status: "Ongoing",
+                image: "https://images.unsplash.com/photo-1522780550166-284a0288c8df?q=80&w=800&auto=format&fit=crop"
+            }
+        ];
+
+        // 2. Render Functions
+        function renderServices() {
+            const grid = document.getElementById('services-grid');
+            servicesData.forEach(service => {
+                const html = `
+                    <div class="group cursor-pointer bg-brand-darker border border-white/5 hover:border-brand-gold/30 transition-colors flex flex-col h-full">
+                        <div class="img-zoom-container h-48 w-full">
+                            <img src="${service.image}" alt="${service.title}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="text-brand-gold mb-4">
+                                <i class="ph ${service.icon} text-3xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold mb-2 group-hover:text-brand-gold transition-colors">${service.title}</h3>
+                            <p class="text-gray-400 text-sm mb-6 flex-grow">${service.description}</p>
+                            <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-brand-gold transition-colors mt-auto">
+                                Learn More <i class="ph ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            projectsData.forEach(project => {
+                const html = `
+                    <div class="group cursor-pointer flex flex-col h-full bg-white">
+                        <div class="img-zoom-container h-64 w-full mb-4">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="flex-grow flex flex-col">
+                            <h3 class="font-bold text-brand-darker text-lg mb-1 group-hover:text-brand-gold transition-colors">${project.title}</h3>
+                            <p class="text-xs text-gray-500 mb-4 font-medium uppercase tracking-wider">
+                                ${project.category} &bull; ${project.location} &bull; <span class="${project.status === 'Completed' ? 'text-green-600' : 'text-brand-gold'}">${project.status}</span>
+                            </p>
+                            <a href="#" class="inline-flex items-center gap-2 text-sm font-bold text-brand-darker group-hover:text-brand-gold transition-colors mt-auto w-max border-b border-transparent group-hover:border-brand-gold pb-1">
+                                Learn More <i class="ph ph-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        // Initialize Rendering
+        document.addEventListener('DOMContentLoaded', () => {
+            renderServices();
+            renderProjects();
+        });
+
+        // 3. UI Interactions (Navbar, Mobile Menu)
+        const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'shadow-lg');
+                navbar.classList.remove('py-4', 'border-white/5');
+                navbar.classList.add('border-brand-dark'); // darker border on scroll
+            } else {
+                navbar.classList.add('py-4', 'border-white/5');
+                navbar.classList.remove('py-2', 'shadow-lg', 'border-brand-dark');
+            }
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('ph-x');
+                icon.classList.add('ph-list');
+            } else {
+                icon.classList.remove('ph-list');
+                icon.classList.add('ph-x');
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.querySelector('i').classList.remove('ph-x');
+                mobileMenuBtn.querySelector('i').classList.add('ph-list');
+            });
+        });
+
+        // 4. Modal Management
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.showModal();
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.close();
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close modals on backdrop click
+        document.querySelectorAll('dialog').forEach(dialog => {
+            dialog.addEventListener('click', (e) => {
+                const dialogDimensions = dialog.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    closeModal(dialog.id);
+                }
+            });
+        });
+
+        // 5. Form Submission (FormSubmit AJAX)
+        // THE ENDPOINT PLACEHOLDER IS DEFINED HERE
+        const FORM_ENDPOINT = "https://formsubmit.co/ajax/PASTE_FORM_EMAIL_HERE";
+        
+        const form = document.getElementById('projectForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Validate endpoint placeholder (prevent accidental submission to fake address during dev)
+            if(FORM_ENDPOINT.includes('PASTE_FORM_EMAIL_HERE') || document.querySelector('input[name="_to"]').value === 'PASTE_FORM_EMAIL_HERE') {
+                console.warn("FormSubmit endpoint placeholder not replaced. Simulating success for preview purposes.");
+                simulateFormSubmission();
+                return;
+            }
+
+            // UI Loading State
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loader"></span> Submitting...';
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            const formData = new FormData(form);
+            const plainFormData = Object.fromEntries(formData.entries());
+            const formDataJsonString = JSON.stringify(plainFormData);
+
+            try {
+                const response = await fetch(FORM_ENDPOINT, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: formDataJsonString
+                });
+
+                if (response.ok) {
+                    // Success
+                    closeModal('consultationModal');
+                    form.reset();
+                    openModal('successModal');
+                } else {
+                    // Server Error
+                    throw new Error('Network response was not ok.');
+                }
+            } catch (error) {
+                // Fetch/Network Error
+                console.error('Submission failed:', error);
+                closeModal('consultationModal');
+                openModal('errorModal');
+            } finally {
+                // Reset Button UI
+                submitBtn.disabled = false;
+                btnText.innerHTML = 'Submit Request';
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+            }
+        });
+
+        // Helper for preview when email is not configured
+        function simulateFormSubmission() {
+             submitBtn.disabled = true;
+             btnText.innerHTML = '<span class="loader"></span> Submitting...';
+             submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+             
+             setTimeout(() => {
+                 submitBtn.disabled = false;
+                 btnText.innerHTML = 'Submit Request';
+                 submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                 closeModal('consultationModal');
+                 form.reset();
+                 openModal('successModal');
+             }, 1500);
+        }
+    </script>
+</body>
+</html>
